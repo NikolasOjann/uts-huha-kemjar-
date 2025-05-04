@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -13,6 +15,7 @@
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="../pages/products.php" class="text-2xl font-bold">Shop<span class="text-yellow-300">X</span></a>
             <nav class="space-x-4">
+                <a href="../pages/purchase_history.php" class="hover:underline">Riwayat</a>
                 <a href="../pages/products.php" class="hover:underline">Produk</a>
                 <?php if (isset($_SESSION['user'])): ?>
                     <span class="font-semibold">Halo, <?= htmlspecialchars($_SESSION['user']) ?></span>
