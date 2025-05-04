@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../config/db.php";
+include "../fungsi.php";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -8,19 +9,19 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $user_id     = $_SESSION['user_id'];
-    $product_id  = $_POST['product_id'];
-    $price       = $_POST['price'];
-    $card_number = $_POST['card_number'];
-    $cvv         = $_POST['cvv'];
-    $date        = date('Y-m-d H:i:s');
+    $user_id = $_SESSION['user_id'];
+    $product_id = $_POST['product_id'];
+    $price = $_POST['price'];
+    $card_number = encryptData($_POST['card_number']);
+    $cvv = encryptData($_POST['cvv']);
+    $date = date('Y-m-d H:i:s');
 
     // Simpan data payment (simulasi)
     $stmt_payment = $conn->prepare("
         INSERT INTO payments (user_id, card_number, cvv, created_at)
         VALUES (?, ?, ?, ?)
     ");
-    $stmt_payment->bind_param("isss", $user_id, $card_number, $cvv, $date);
+    $stmt_payment->bind_param("ssss", $user_id, $card_number, $cvv, $date);
     $stmt_payment->execute();
 
     // Simpan ke tabel purchase_history
@@ -39,4 +40,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 } else {
     echo "<p>Metode tidak diperbolehkan.</p>";
 }
-?>

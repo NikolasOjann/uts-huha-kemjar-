@@ -2,8 +2,8 @@
 session_start();
 include "../includes/header.php";
 include "../config/db.php";
+include "../fungsi.php";
 
-// Cek apakah user sudah login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -40,9 +40,14 @@ $result = $stmt->get_result();
 <?php if ($result->num_rows > 0): ?>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <?php while ($row = $result->fetch_assoc()): ?>
+            <?php
+            $card_number = $row['card_number'] ? decryptData($row['card_number']) : '-';
+            $cvv = $row['cvv'] ? decryptData($row['cvv']) : '-';
+            ?>
             <div class="bg-white p-4 rounded shadow flex flex-col gap-2">
                 <div class="flex items-center gap-4">
-                    <img src="<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['product_name']) ?>" class="w-24 h-24 object-cover rounded">
+                    <img src="<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['product_name']) ?>"
+                        class="w-24 h-24 object-cover rounded">
                     <div>
                         <h3 class="text-lg font-semibold"><?= htmlspecialchars($row['product_name']) ?></h3>
                         <p class="text-gray-600 text-sm">Tanggal: <?= htmlspecialchars($row['purchase_date']) ?></p>
@@ -53,8 +58,8 @@ $result = $stmt->get_result();
                     <p><strong>User ID:</strong> <?= htmlspecialchars($row['user_id']) ?></p>
                     <p><strong>Name:</strong> <?= htmlspecialchars($row['user_name']) ?></p>
                     <p><strong>Product ID:</strong> <?= htmlspecialchars($row['product_id']) ?></p>
-                    <p><strong>Card Number:</strong> <?= htmlspecialchars($row['card_number']) ?: '-' ?></p>
-                    <p><strong>CVV:</strong> <?= htmlspecialchars($row['cvv']) ?: '-' ?></p>
+                    <p><strong>Card Number:</strong> <?= htmlspecialchars($card_number) ?></p>
+                    <p><strong>CVV:</strong> <?= htmlspecialchars($cvv) ?></p>
                 </div>
             </div>
         <?php endwhile; ?>
