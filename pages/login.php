@@ -1,4 +1,5 @@
-<?php include "../includes/header.php"; include "../config/db.php"; ?>
+<?php include "../includes/header.php";
+include "../config/db.php"; ?>
 <h2 class="text-2xl font-bold mb-4">Login ke ShopX</h2>
 
 <?php
@@ -30,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <input name="password" type="password" placeholder="Password" required class="w-full border p-2 rounded">
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
 </form>
-<p class="mt-4 text-sm">Belum punya akun? <a href="register.php" class="text-blue-600 hover:underline">Daftar di sini</a></p>
+<p class="mt-4 text-sm">Belum punya akun? <a href="formRegister.php" class="text-blue-600 hover:underline">Daftar di
+        sini</a></p>
 
 <?php include "../includes/footer.php"; ?>

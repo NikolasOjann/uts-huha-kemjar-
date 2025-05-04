@@ -1,14 +1,21 @@
-<?php include "../includes/header.php"; include "../config/db.php"; ?>
+<?php
+include "../includes/header.php";
+include "../config/db.php";
+include "../config/crypto.php";
+
+?>
 <h2 class="text-2xl font-bold mb-4">Registrasi Akun Baru</h2>
 
 <?php
 // Proses registrasi
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST['username'];
-    $password = $_POST['password'];
-    $name     = $_POST['name'];
-    $address  = $_POST['address'];
-    $phone    = $_POST['phone'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // gunakan hashing untuk password
+
+    // Data sensitif
+    $name = encryptData($_POST['name']);
+    $address = encryptData($_POST['address']);
+    $phone = encryptData($_POST['phone']);
 
     $stmt = $conn->prepare("INSERT INTO users (username, password, name, address, phone) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $username, $password, $name, $address, $phone);
