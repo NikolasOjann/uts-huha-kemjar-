@@ -7,8 +7,8 @@ include "../fungsi.php";
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = encryptData($_POST['username']);
+    $password = encryptData($_POST['password']);
 
     // Enkripsi data sensitif
     $name = encryptData($_POST['name']);

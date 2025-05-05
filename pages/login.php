@@ -1,11 +1,15 @@
-<?php include "../includes/header.php";
-include "../config/db.php"; ?>
+<?php 
+include "../includes/header.php";
+include "../config/db.php";
+include "../fungsi.php";
+?>
+
 <h2 class="text-2xl font-bold mb-4">Login ke ShopX</h2>
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = encryptData($_POST['username']);
+    $password = encryptData($_POST['password']);
 
     $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
     $stmt->bind_param("s", $username);
