@@ -1,4 +1,14 @@
-<?php include "../includes/header.php"; include "../config/db.php"; ?>
+<?php include "../includes/header.php"; 
+include "../config/db.php"; 
+?>
+
+<?php
+// Cek jika ada query string 'success=1' yang menunjukkan pembayaran berhasil
+if (isset($_GET['success']) && $_GET['success'] == 1) {
+    echo "<div class='bg-green-100 text-green-600 p-4 rounded mb-4'>Pembayaran berhasil! Terima kasih telah berbelanja.</div>";
+}
+?>
+
 <h2 class="text-2xl font-bold mb-6">Daftar Produk</h2>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

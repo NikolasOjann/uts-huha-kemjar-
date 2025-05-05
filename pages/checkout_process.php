@@ -12,6 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user_id = $_SESSION['user_id'];
     $product_id = $_POST['product_id'];
     $price = $_POST['price'];
+
+    // Enkripsi data sensitif
     $card_number = encryptData($_POST['card_number']);
     $cvv = encryptData($_POST['cvv']);
     $date = date('Y-m-d H:i:s');
@@ -41,4 +43,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo "<p>Gagal menyimpan riwayat pembelian.</p>";
     }
 }
-
+?>
