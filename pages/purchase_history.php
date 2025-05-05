@@ -16,6 +16,7 @@ $stmt = $conn->prepare("
     SELECT 
         p.name AS product_name, 
         p.image, 
+        h.id AS purchase_id,
         h.product_id, 
         h.purchase_date, 
         h.price, 
@@ -25,7 +26,7 @@ $stmt = $conn->prepare("
         pay.cvv
     FROM purchase_history h
     JOIN products p ON h.product_id = p.id
-    LEFT JOIN payments pay ON h.user_id = pay.user_id AND DATE(pay.created_at) = DATE(h.purchase_date)
+    LEFT JOIN payments pay ON pay.purchase_id = h.id
     LEFT JOIN users u ON h.user_id = u.id
     WHERE h.user_id = ?
     ORDER BY h.purchase_date DESC
@@ -41,8 +42,10 @@ $result = $stmt->get_result();
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <?php while ($row = $result->fetch_assoc()): ?>
             <?php
+
             $card_number = $row['card_number'] ? decryptData($row['card_number']) : '-';
             $cvv = $row['cvv'] ? decryptData($row['cvv']) : '-';
+            $username = $row['user_name'] ? decryptData($row['user_name']) : '-';
             ?>
             <div class="bg-white p-4 rounded shadow flex flex-col gap-2">
                 <div class="flex items-center gap-4">
@@ -56,7 +59,7 @@ $result = $stmt->get_result();
                 </div>
                 <div class="text-sm text-gray-700 mt-2 border-t pt-2">
                     <p><strong>User ID:</strong> <?= htmlspecialchars($row['user_id']) ?></p>
-                    <p><strong>Name:</strong> <?= htmlspecialchars($row['user_name']) ?></p>
+                    <p><strong>Name:</strong> <?= htmlspecialchars($username) ?></p>
                     <p><strong>Product ID:</strong> <?= htmlspecialchars($row['product_id']) ?></p>
                     <p><strong>Card Number:</strong> <?= htmlspecialchars($card_number) ?></p>
                     <p><strong>CVV:</strong> <?= htmlspecialchars($cvv) ?></p>
