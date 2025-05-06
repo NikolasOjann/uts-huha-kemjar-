@@ -1,4 +1,4 @@
-<?php 
+<?php
 include "../includes/header.php";
 include "../config/db.php";
 include "../fungsi.php";
@@ -16,10 +16,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
     if ($user = $result->fetch_assoc()) {
-        if ($password === $user['password']) {
+        if ($password === $user['password'] && $user['role'] == 'user') {
+            $_SESSION['role'] = $user['role'];
             $_SESSION['user'] = $user['username'];
             $_SESSION['user_id'] = $user['id'];
             header("Location: products.php");
+            exit();
+        } else if ($password === $user['password'] && $user['role'] == 'admin') {
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['user'] = $user['username'];
+            $_SESSION['user_id'] = $user['id'];
+            header("Location: ../admin/index.php");
             exit();
         } else {
             echo "<p class='text-red-600 mb-4'>Password salah.</p>";
