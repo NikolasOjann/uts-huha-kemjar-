@@ -2,7 +2,7 @@
 session_start();
 include "../includes/header.php";
 include "../config/db.php";
-include "../fungsi.php";
+include_once "../fungsi.php";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
