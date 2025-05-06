@@ -1,5 +1,6 @@
 <?php
 include "../config/db.php";
+include_once "../fungsi.php"; // Tambahkan ini agar bisa akses encryptData()
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Ambil data dari form
@@ -10,8 +11,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Validasi sederhana
     if ($id && $name && $price && $image) {
+        // Enkripsi data name dan image
+        $encryptedName = encryptData($name);
+        $encryptedImage = encryptData($image);
+
         $stmt = $conn->prepare("UPDATE products SET name = ?, price = ?, image = ? WHERE id = ?");
-        $stmt->bind_param("sisi", $name, $price, $image, $id);
+        $stmt->bind_param("sisi", $encryptedName, $price, $encryptedImage, $id);
 
         if ($stmt->execute()) {
             header("Location: dataProduct.php?success=2");
