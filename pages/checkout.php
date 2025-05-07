@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../config/db.php";
+require_once "../fungsi.php"; // Tambahkan untuk bisa menggunakan decryptData()
 
 // Cek login
 if (!isset($_SESSION['user'])) {
@@ -16,10 +17,16 @@ if (isset($_GET['id'])) {
     $stmt->execute();
     $result = $stmt->get_result();
     $product = $result->fetch_assoc();
+
     if (!$product) {
         echo "Produk tidak ditemukan.";
         exit();
     }
+
+    // Dekripsi field name dan image
+    $product['name']  = decryptData($product['name']);
+    $product['image'] = decryptData($product['image']);
+
 } else {
     echo "ID produk tidak valid.";
     exit();

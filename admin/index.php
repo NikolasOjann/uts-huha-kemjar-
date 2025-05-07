@@ -1,6 +1,18 @@
 <?php 
 include "components/header.php"; 
 include "../config/db.php";
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    header("Location: ../pages/login.php");
+    exit();
+}
+
+// Cek apakah user adalah admin
+if ($_SESSION['role'] !== 'admin') {
+    echo "<script>alert('Akses ditolak. Halaman ini hanya bisa diakses oleh admin.'); window.location.href='../pages/products.php';</script>";
+    exit();
+}
 
 // Query jumlah data dari masing-masing tabel
 $jumlahProduk = $conn->query("SELECT COUNT(*) as total FROM products")->fetch_assoc()['total'];

@@ -1,7 +1,7 @@
 <?php
 include "../includes/header.php";
 include "../config/db.php";
-include "../fungsi.php";
+include_once "../fungsi.php";
 ?>
 
 <h2 class="text-2xl font-bold mb-4">Login ke ShopX</h2>

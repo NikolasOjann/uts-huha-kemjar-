@@ -1,9 +1,11 @@
-<?php include "../includes/header.php"; 
+<?php 
+include "../includes/header.php"; 
 include "../config/db.php"; 
+require_once "../fungsi.php"; // Pastikan fungsi decryptData() tersedia di sini
 ?>
 
 <?php
-// Cek jika ada query string 'success=1' yang menunjukkan pembayaran berhasil
+// Tampilkan notifikasi jika pembayaran berhasil
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     echo "<div class='bg-green-100 text-green-600 p-4 rounded mb-4'>Pembayaran berhasil! Terima kasih telah berbelanja.</div>";
 }
@@ -15,14 +17,19 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     <?php
     $products = $conn->query("SELECT * FROM products");
     while ($p = $products->fetch_assoc()):
+        // Dekripsi data produk
+        $name  = decryptData($p['name']);
+        $price = $p['price'];
+        $image = decryptData($p['image']);
     ?>
     <div class="bg-white p-4 rounded shadow">
-        <img src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['name']) ?>" class="w-full h-48 object-cover rounded mb-2">
-        <h3 class="text-lg font-semibold"><?= htmlspecialchars($p['name']) ?></h3>
-        <p class="text-blue-600 font-bold">Rp <?= number_format($p['price'], 0, ',', '.') ?></p>
+        <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($name) ?>" class="w-full aspect-video object-contain rounded mb-2 bg-white">
+        <h3 class="text-lg font-semibold"><?= htmlspecialchars($name) ?></h3>
+        <p class="text-blue-600 font-bold">Rp <?= number_format($price, 0, ',', '.') ?></p>
         <a href="checkout.php?id=<?= $p['id'] ?>" class="inline-block mt-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Beli Sekarang</a>
     </div>
     <?php endwhile; ?>
 </div>
 
 <?php include "../includes/footer.php"; ?>
+

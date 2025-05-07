@@ -42,27 +42,29 @@ $result = $stmt->get_result();
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <?php while ($row = $result->fetch_assoc()): ?>
             <?php
-
+            // Dekripsi data
+            $product_name = $row['product_name'] ? decryptData($row['product_name']) : '-';
+            $image = $row['image'] ? decryptData($row['image']) : '-';
             $card_number = $row['card_number'] ? decryptData($row['card_number']) : '-';
             $cvv = $row['cvv'] ? decryptData($row['cvv']) : '-';
             $username = $row['user_name'] ? decryptData($row['user_name']) : '-';
             ?>
             <div class="bg-white p-4 rounded shadow flex flex-col gap-2">
                 <div class="flex items-center gap-4">
-                    <img src="<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['product_name']) ?>"
+                    <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($product_name) ?>"
                         class="w-24 h-24 object-cover rounded">
                     <div>
-                        <h3 class="text-lg font-semibold"><?= htmlspecialchars($row['product_name']) ?></h3>
+                        <h3 class="text-lg font-semibold"><?= htmlspecialchars($product_name) ?></h3>
                         <p class="text-gray-600 text-sm">Tanggal: <?= htmlspecialchars($row['purchase_date']) ?></p>
                         <p class="text-blue-600 font-bold">Rp <?= number_format($row['price'], 0, ',', '.') ?></p>
                     </div>
                 </div>
                 <div class="text-sm text-gray-700 mt-2 border-t pt-2">
-                    <p><strong>User ID:</strong> <?= htmlspecialchars($row['user_id']) ?></p>
-                    <p><strong>Name:</strong> <?= htmlspecialchars($username) ?></p>
-                    <p><strong>Product ID:</strong> <?= htmlspecialchars($row['product_id']) ?></p>
-                    <p><strong>Card Number:</strong> <?= htmlspecialchars($card_number) ?></p>
-                    <p><strong>CVV:</strong> <?= htmlspecialchars($cvv) ?></p>
+                    <pre><strong>User ID      :</strong> <?= htmlspecialchars($row['user_id']) ?></pre>
+                    <pre><strong>Name         :</strong> <?= htmlspecialchars($username) ?></pre>
+                    <pre><strong>Product ID   :</strong> <?= htmlspecialchars($row['product_id']) ?></pre>
+                    <pre><strong>Card Number  :</strong> <?= htmlspecialchars($card_number) ?></pre>
+                    <pre><strong>CVV          :</strong> <?= htmlspecialchars($cvv) ?></pre>
                 </div>
             </div>
         <?php endwhile; ?>

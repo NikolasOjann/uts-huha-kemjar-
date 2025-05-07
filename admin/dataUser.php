@@ -1,6 +1,19 @@
 <?php include "components/header.php"; ?>
 <?php include "../config/db.php"; ?>
-<?php include "../fungsi.php"; ?>
+<?php include "../fungsi.php"; 
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    header("Location: ../pages/login.php");
+    exit();
+}
+
+// Cek apakah user adalah admin
+if ($_SESSION['role'] !== 'admin') {
+    echo "<script>alert('Akses ditolak. Halaman ini hanya bisa diakses oleh admin.'); window.location.href='../pages/products.php';</script>";
+    exit();
+}
+?>
 <div class="sticky top-0 bg-white mx-6 px-6 pt-6 pb-3 z-10 rounded-lg shadow">
     <h1 class="text-3xl font-bold mb-4">Data User</h1>
     <p class="mb-6">Selamat datang di dashboard admin! Anda dapat mengelola produk, kategori, dan pengguna
